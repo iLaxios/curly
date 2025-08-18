@@ -1,0 +1,79 @@
+# ------------------------------
+# Java / Spring Boot
+# ------------------------------
+target/
+build/
+out/
+*.jar
+*.war
+*.ear
+
+# Maven Wrapper
+.mvn/
+.mvnw
+.mvnw.cmd
+
+# Gradle Wrapper
+.gradle/
+gradlew
+gradlew.bat
+
+# Logs
+*.log
+logs/
+*.out
+
+# Spring Boot specific
+application-*.yml
+application-*.properties
+!application-example.yml
+!application-example.properties
+
+# ------------------------------
+# IDE / Editors
+# ------------------------------
+# IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# VSCode
+.vscode/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# ------------------------------
+# OS / Misc
+# ------------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ------------------------------
+# Docker / Infra
+# ------------------------------
+*.pid
+*.seed
+*.pid.lock
+docker-compose.override.yml
+.env
+
+# ------------------------------
+# Testing / Coverage
+# ------------------------------
+/test-output/
+/surefire-reports/
+/jacoco.exec
+/coverage/

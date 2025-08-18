@@ -1,2 +1,2 @@
-# Shortly
+# Curly
 Distributed URL Shortener
