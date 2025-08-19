@@ -24,6 +24,10 @@ public class RedirectController {
     @GetMapping("/{shortCode}")
     public ResponseEntity<Void> redirect(@PathVariable String shortCode) {
 
+        if (!shortCode.matches("[a-zA-Z0-9]{6}")) {
+            throw new IllegalArgumentException("Invalid short code format");
+        }
+
         UrlMapping urlMapping = redirectService.getOriginalUrl(shortCode);
 
         if (urlMapping == null) return ResponseEntity.notFound().build();
