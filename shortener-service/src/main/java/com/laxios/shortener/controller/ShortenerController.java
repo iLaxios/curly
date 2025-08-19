@@ -19,14 +19,15 @@ public class ShortenerController {
     public String shorten(@RequestBody ShortenRequest shortenRequest) {
         String inputUrl = shortenRequest.getUrl();
 
-        UrlValidator validator = new UrlValidator(
-                new String[] {"http","https"},
-                UrlValidator.ALLOW_LOCAL_URLS // remember to remove this;
-        );
-        if (!validator.isValid(inputUrl)) {
-            throw new IllegalArgumentException("Invalid URL format");
-        }
+//        UrlValidator validator = new UrlValidator(
+//                new String[] {"http","https"},
+//                UrlValidator.ALLOW_LOCAL_URLS // remember to remove this;
+//        );
+//        if (!validator.isValid(inputUrl)) {
+//            throw new IllegalArgumentException("Invalid URL format");
+//        }
 
-        return "Shorten endpoint hit!";
+        String shortenUrl = shortenerService.shortenURL(inputUrl);
+        return shortenUrl;
     }
 }
