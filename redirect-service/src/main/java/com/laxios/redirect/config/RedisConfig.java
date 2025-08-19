@@ -1,6 +1,6 @@
 package com.laxios.redirect.config;
 
-import com.laxios.redirect.UrlMapping;
+import com.laxios.redirect.entity.UrlMapping;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;

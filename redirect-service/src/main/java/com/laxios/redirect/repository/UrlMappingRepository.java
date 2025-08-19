@@ -1,6 +1,6 @@
 package com.laxios.redirect.repository;
 
-import com.laxios.redirect.UrlMapping;
+import com.laxios.redirect.entity.UrlMapping;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
