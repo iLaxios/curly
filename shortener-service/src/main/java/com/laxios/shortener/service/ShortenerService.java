@@ -1,14 +1,24 @@
 package com.laxios.shortener.service;
 
+import com.laxios.shortener.entity.UrlMapping;
+import com.laxios.shortener.repository.UrlMappingRepository;
+import lombok.Data;
 import org.apache.commons.validator.routines.UrlValidator;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Data
 @Service
 public class ShortenerService {
+
+    private final UrlMappingRepository urlMappingRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
+
 
     // In-memory store for now (later replace with Postgres/Redis)
     private final Map<String, String> urlStore = new HashMap<>();
@@ -28,24 +38,26 @@ public class ShortenerService {
             throw new IllegalArgumentException("Invalid URL format");
         }
 
-        // If URL already shortened, return existing code
-        for (Map.Entry<String, String> entry : urlStore.entrySet()) {
-            if (entry.getValue().equals(inputUrl)) {
-                return entry.getKey();
-            }
+        // If URL already shortened, return existing code from DB if not in cache
+        Optional<UrlMapping> existing = urlMappingRepository.findByOriginalUrl(inputUrl);
+        if (existing.isPresent()) {
+            return existing.get().getShortCode();
         }
 
         // Generate short code
         String shortCode = generateShortCode();
 
-        // Store mapping
-        urlStore.put(shortCode, inputUrl);
+        UrlMapping mapping = UrlMapping.builder()
+                .originalUrl(inputUrl)
+                .shortCode(shortCode)
+                .build();
+
+        urlMappingRepository.save(mapping);
+
+        // Save to Redis
+        redisTemplate.opsForValue().set(shortCode, mapping);
 
         return "http://cur.ly/" + shortCode;
-    }
-
-    public String getOriginalURL(String shortCode) {
-        return urlStore.get(shortCode);
     }
 
     private String generateShortCode() {
