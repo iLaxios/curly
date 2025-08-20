@@ -1,14 +1,23 @@
 package com.laxios.auth.controller;
 
+import com.laxios.auth.dto.RegisterRequest;
+import com.laxios.auth.service.RegisterService;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Service
 @RestController
+@Data
 public class AuthController {
-    @PostMapping
-    public String handleRegister() {
-        return "hello World";
+
+    private final RegisterService registerService;
+
+    @PostMapping("/register")
+    public String handleRegister(@RequestBody RegisterRequest registerRequest) {
+        registerService.registerUser(registerRequest.getUsername(), registerRequest.getPassword());
+        return registerRequest.getUsername();
     }
 }
