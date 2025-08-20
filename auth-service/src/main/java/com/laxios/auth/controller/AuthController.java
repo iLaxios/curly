@@ -1,5 +1,6 @@
 package com.laxios.auth.controller;
 
+import com.laxios.auth.dto.LoginRequest;
 import com.laxios.auth.dto.RegisterRequest;
 import com.laxios.auth.service.RegisterService;
 import lombok.Data;
@@ -19,5 +20,10 @@ public class AuthController {
     public String handleRegister(@RequestBody RegisterRequest registerRequest) {
         registerService.registerUser(registerRequest.getUsername(), registerRequest.getPassword());
         return registerRequest.getUsername();
+    }
+
+    @PostMapping("/login")
+    public String handleLogin(@RequestBody LoginRequest loginRequest) {
+        return loginRequest.getUsername();
     }
 }
