@@ -21,4 +21,7 @@ public class UrlMapping {
 
     @Column(nullable = false, unique = true)
     private String shortCode;
+
+    // if null = guest user
+    private String createdByUser;
 }

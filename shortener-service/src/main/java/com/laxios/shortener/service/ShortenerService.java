@@ -2,6 +2,7 @@ package com.laxios.shortener.service;
 
 import com.laxios.shortener.entity.UrlMapping;
 import com.laxios.shortener.repository.UrlMappingRepository;
+import com.laxios.shortener.util.JwtUtil;
 import lombok.Data;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -26,7 +27,7 @@ public class ShortenerService {
     private static final String ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int SHORT_CODE_LENGTH = 6;
 
-    public String shortenURL(String inputUrl) {
+    public String shortenURL(String inputUrl, String jwt) {
 
         // Validate url
         UrlValidator validator = new UrlValidator(
@@ -38,8 +39,17 @@ public class ShortenerService {
             throw new IllegalArgumentException("Invalid URL format");
         }
 
+        String createdByUser = null;
+        if (jwt != null && !jwt.isBlank()) {
+            try {
+                createdByUser = JwtUtil.extractUsername(jwt);
+            } catch (Exception e) {
+                throw new RuntimeException("Invalid JWT");
+            }
+        }
+
         // If URL already shortened, return existing code from DB if not in cache
-        Optional<UrlMapping> existing = urlMappingRepository.findByOriginalUrl(inputUrl);
+        Optional<UrlMapping> existing = urlMappingRepository.findByOriginalUrlAndCreatedByUser(inputUrl, createdByUser);
         if (existing.isPresent()) {
             return existing.get().getShortCode();
         }
@@ -50,6 +60,7 @@ public class ShortenerService {
         UrlMapping mapping = UrlMapping.builder()
                 .originalUrl(inputUrl)
                 .shortCode(shortCode)
+                .createdByUser(createdByUser)
                 .build();
 
         urlMappingRepository.save(mapping);
