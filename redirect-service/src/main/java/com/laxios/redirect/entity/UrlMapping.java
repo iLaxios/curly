@@ -22,4 +22,5 @@ public class UrlMapping {
 
     private String originalUrl;
     private String shortCode;
+    private String createdByUser;
 }
