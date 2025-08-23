@@ -1,6 +1,5 @@
 package com.laxios.redirect.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laxios.redirect.entity.UrlMapping;
 import com.laxios.commons.events.UrlClickedEvent;
 import com.laxios.redirect.repository.UrlMappingRepository;
@@ -19,8 +18,7 @@ public class RedirectService {
 
     private final RedisTemplate<String, UrlMapping> redisTemplate;
     private final UrlMappingRepository urlMappingRepository;
-    private final KafkaTemplate<String, String> kafkaTemplate;
-    private final ObjectMapper objectMapper;
+    private final KafkaTemplate<String, UrlClickedEvent> kafkaTemplate;
 
     public UrlMapping getOriginalUrl(String shortCode) {
         UrlMapping mapping = redisTemplate.opsForValue().get(shortCode);
@@ -34,8 +32,7 @@ public class RedirectService {
     public void sendClickEvent(String shortCode) {
         try {
             UrlClickedEvent event = new UrlClickedEvent(shortCode, LocalDateTime.now());
-            String message = objectMapper.writeValueAsString(event);
-            kafkaTemplate.send("url-clicks", message);
+            kafkaTemplate.send("url-clicks", event);
         } catch (Exception e) {
             throw new RuntimeException("Failed to serialize event", e);
         }
