@@ -32,6 +32,9 @@ public class RedirectController {
 
         if (urlMapping == null) return ResponseEntity.notFound().build();
 
+        // kafka events
+        redirectService.sendClickEvent(shortCode);
+
         return ResponseEntity.status(HttpStatus.FOUND)
                 .location(URI.create(urlMapping.getOriginalUrl()))
                 .build();
