@@ -2,7 +2,7 @@ package com.laxios.redirect.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laxios.redirect.entity.UrlMapping;
-import com.laxios.redirect.events.UrlClickedEvent;
+import com.laxios.commons.events.UrlClickedEvent;
 import com.laxios.redirect.repository.UrlMappingRepository;
 import lombok.Data;
 import org.springframework.data.redis.core.RedisTemplate;

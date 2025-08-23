@@ -1,4 +1,4 @@
-package com.laxios.redirect.events;
+package com.laxios.commons.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
