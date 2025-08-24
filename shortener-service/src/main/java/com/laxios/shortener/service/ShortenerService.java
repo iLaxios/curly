@@ -73,12 +73,10 @@ public class ShortenerService {
         // Save to Redis
         redisTemplate.opsForValue().set(shortCode, mapping);
 
-        // emit event to kafka for user creation for initiating analytics
+        // emit event to kafka for url creation for initiating analytics
         UrlCreatedEvent event = new UrlCreatedEvent(
                 mapping.getShortCode(),
-                mapping.getOriginalUrl(),
-                mapping.getCreatedByUser(),
-                mapping.getCreatedAt()
+                mapping.getOriginalUrl()
         );
 
         kafkaTemplate.send("url-created", event);

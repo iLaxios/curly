@@ -5,9 +5,9 @@ import com.laxios.useranalytics.entity.Url;
 import com.laxios.useranalytics.repository.UrlRepository;
 import lombok.Data;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @Data
 public class UrlClickListener {
 

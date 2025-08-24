@@ -12,6 +12,4 @@ import java.time.LocalDateTime;
 public class UrlCreatedEvent {
     private String shortCode;
     private String originalUrl;
-    private String createdBy;       // can be "guest" or user id
-    private LocalDateTime createdAt;
 }
