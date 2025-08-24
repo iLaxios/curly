@@ -9,15 +9,15 @@ spring:
         spring.json.trusted.packages: "*"
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/useranalyticsdb
-    username: useranalytics
-    password: secret
+    url: jdbc:postgresql://localhost:5432/curlydb
+    username: user
+    password: password
     driver-class-name: org.postgresql.Driver
 
-    jpa:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
       hibernate:
-        ddl-auto: update   # change to validate in prod
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.PostgreSQLDialect
-      show-sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
