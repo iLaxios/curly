@@ -3,6 +3,8 @@ package com.laxios.shortener.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "url_mappings")
 @Getter
@@ -24,4 +26,7 @@ public class UrlMapping {
 
     // if null = guest user
     private String createdByUser;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 }

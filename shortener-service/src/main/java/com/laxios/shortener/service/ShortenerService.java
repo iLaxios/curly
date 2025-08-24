@@ -1,13 +1,16 @@
 package com.laxios.shortener.service;
 
+import com.laxios.commons.events.UrlCreatedEvent;
 import com.laxios.shortener.entity.UrlMapping;
 import com.laxios.shortener.repository.UrlMappingRepository;
 import com.laxios.shortener.util.JwtUtil;
 import lombok.Data;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -19,6 +22,7 @@ public class ShortenerService {
 
     private final UrlMappingRepository urlMappingRepository;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
 
     // In-memory store for now (later replace with Postgres/Redis)
@@ -61,12 +65,23 @@ public class ShortenerService {
                 .originalUrl(inputUrl)
                 .shortCode(shortCode)
                 .createdByUser(createdByUser)
+                .createdAt(LocalDateTime.now())
                 .build();
 
         urlMappingRepository.save(mapping);
 
         // Save to Redis
         redisTemplate.opsForValue().set(shortCode, mapping);
+
+        // emit event to kafka for user creation for initiating analytics
+        UrlCreatedEvent event = new UrlCreatedEvent(
+                mapping.getShortCode(),
+                mapping.getOriginalUrl(),
+                mapping.getCreatedByUser(),
+                mapping.getCreatedAt()
+        );
+
+        kafkaTemplate.send("url-created", event);
 
         return "http://cur.ly/" + shortCode;
     }
