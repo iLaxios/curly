@@ -76,7 +76,8 @@ public class ShortenerService {
         // emit event to kafka for url creation for initiating analytics
         UrlCreatedEvent event = new UrlCreatedEvent(
                 mapping.getShortCode(),
-                mapping.getOriginalUrl()
+                mapping.getCreatedByUser(),
+                mapping.getCreatedAt()
         );
 
         kafkaTemplate.send("url-created", event);

@@ -1,7 +1,7 @@
 package com.laxios.useranalytics.service;
 
 import com.laxios.useranalytics.dto.UrlAnalyticsDto;
-import com.laxios.useranalytics.entity.UrlAnalyticsEntity;
+import com.laxios.useranalytics.entity.Url;
 import com.laxios.useranalytics.repository.UrlAnalyticsRepository;
 import lombok.Data;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class UrlAnalyticsService {
     }
 
     public UrlAnalyticsDto getByShortCode(String shortCode) {
-        UrlAnalyticsEntity analytics = repository.findByShortCode(shortCode)
+        Url analytics = repository.findByShortCode(shortCode)
                 .orElseThrow(() -> new RuntimeException("Not found: " + shortCode));
 
         return new UrlAnalyticsDto(
@@ -33,10 +33,10 @@ public class UrlAnalyticsService {
     }
 
     public List<UrlAnalyticsDto> getByUser(String createdBy) {
-        List<UrlAnalyticsEntity> list = repository.findByCreatedBy(createdBy);
+        List<Url> list = repository.findByCreatedBy(createdBy);
         List<UrlAnalyticsDto> dtoList = new ArrayList<>();
 
-        for (UrlAnalyticsEntity analytics : list) {
+        for (Url analytics : list) {
             dtoList.add(new UrlAnalyticsDto(
                     analytics.getShortCode(),
                     analytics.getClickCount(),

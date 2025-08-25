@@ -11,5 +11,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UrlCreatedEvent {
     private String shortCode;
-    private String originalUrl;
+    private String createdBy;
+    private LocalDateTime createdAt;
 }

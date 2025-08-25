@@ -3,6 +3,8 @@ package com.laxios.useranalytics.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "url_analytics")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
@@ -17,5 +19,9 @@ public class Url {
 
     private Long clickCount = 0L;
 
-    private java.time.LocalDateTime lastAccessed;
+    private String createdBy;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime lastAccessed;
 }

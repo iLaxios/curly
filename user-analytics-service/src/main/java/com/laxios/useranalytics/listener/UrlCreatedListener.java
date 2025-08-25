@@ -17,6 +17,8 @@ public class UrlCreatedListener {
     public void listen(UrlCreatedEvent event) {
         Url url = new Url();
         url.setShortCode(event.getShortCode());
+        url.setCreatedBy(event.getCreatedBy());
+        url.setCreatedAt(event.getCreatedAt());
         url.setClickCount(0L);
         url.setLastAccessed(null);
 
