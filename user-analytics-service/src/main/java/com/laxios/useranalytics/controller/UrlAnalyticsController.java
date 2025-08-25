@@ -1,6 +1,7 @@
 package com.laxios.useranalytics.controller;
 
 import com.laxios.useranalytics.dto.UrlAnalyticsDto;
+import com.laxios.useranalytics.service.UrlAnalyticsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
