@@ -1,0 +1,43 @@
+services:
+  shortener-service:
+    container_name: shortener-service
+    build:
+      context: ../../shortener-service
+    ports:
+      - "8080:8080"
+    networks:
+      - curly_net
+
+  redirect-service:
+    container_name: redirect-service
+    build:
+      context: ../../redirect-service
+    ports:
+      - "8081:8081"
+    networks:
+      - curly_net
+    environment:
+      - SPRING_DATA_REDIS_HOST=curly-redis
+      - SPRING_DATA_REDIS_PORT=6379
+
+  auth-service:
+    container_name: auth-service
+    build:
+      context: ../../auth-service
+    ports:
+      - "8082:8082"
+    networks:
+      - curly_net
+
+  analytics-service:
+    container_name: analytics-service
+    build:
+      context: ../../analytics-service
+    ports:
+      - "8083:8083"
+    networks:
+      - curly_net
+
+networks:
+  curly_net:
+    external: true

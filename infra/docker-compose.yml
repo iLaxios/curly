@@ -7,11 +7,12 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
+      POSTGRES_DB: curlydb
     ports:
       - "5432:5432"
     volumes:
+#      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
       - pgdata:/var/lib/postgresql/data
-      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   redis:
     image: redis:7
@@ -40,9 +41,48 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://curly-kafka:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+
+  shortener-service:
+    container_name: curly-shortener
+    build:
+      context: ../shortener-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+  redirect-service:
+    container_name: curly-redirect
+    build:
+      context: ../redirect-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+
+  auth-service:
+    container_name: curly-auth
+    build:
+      context: ../auth-service
+    ports:
+      - "8082:8082"
+
+  analytics-service:
+    container_name: curly-analytics
+    build:
+      context: ../analytics-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - postgres
+      - kafka
 
 volumes:
   pgdata:

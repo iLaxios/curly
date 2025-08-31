@@ -1,0 +1,26 @@
+spring:
+  kafka:
+    bootstrap-servers: curly-kafka:9092
+    consumer:
+      group-id: analytics-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+
+  datasource:
+    url: jdbc:postgresql://curly-postgres:5432/curlydb
+    username: user
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+server:
+  port: 8083

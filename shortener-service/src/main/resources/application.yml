@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://curly-postgres:5432/curlydb
+    username: user
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+  redis:
+    host: curly-redis
+    port: 6379
+  kafka:
+    producer:
+      bootstrap-servers: curly-kafka:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

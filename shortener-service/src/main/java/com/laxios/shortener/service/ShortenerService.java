@@ -80,6 +80,7 @@ public class ShortenerService {
                 mapping.getCreatedAt()
         );
 
+        System.out.println("sending kafka even...");
         kafkaTemplate.send("url-created", event);
 
         return "http://cur.ly/" + shortCode;
