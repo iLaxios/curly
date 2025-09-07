@@ -6,3 +6,8 @@ scrape_configs:
     metrics_path: '/actuator/prometheus'   # <--- important
     static_configs:
       - targets: ['shortener-service:8080']
+
+  - job_name: 'redirect-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'redirect-service:8081' ]
