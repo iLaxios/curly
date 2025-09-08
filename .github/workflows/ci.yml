@@ -1,0 +1,33 @@
+name: Curly CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build Commons
+        run: mvn -f commons/pom.xml clean install -DskipTests
+
+      - name: Build Shortener
+        run: mvn -f shortener-service/pom.xml clean package -DskipTests
+
+      - name: Build Redirect
+        run: mvn -f redirect-service/pom.xml clean package -DskipTests
+
+      - name: Build Analytics
+        run: mvn -f analytics-service/pom.xml clean package -DskipTests
